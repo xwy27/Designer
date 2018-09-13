@@ -173,7 +173,9 @@ def authority(request):
         authority: xxx
     }
     return json:
-    msg: xxx
+    {
+        msg: xxx
+    }
     '''
     users = json.loads(request.POST['users'])
     authority = request.POST['authority']

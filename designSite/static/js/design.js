@@ -631,6 +631,12 @@ $('#analysis-sequence-button').on('click', function () {
 // Share
 $('#share-button').on('click', function() {
     $('#share-modal').modal('show');
+    if (design.design.name == '') {
+        $('#share-modal-name').html('Empty');
+    } else {
+        $('#share-modal-name').html(design.design.name);
+    }
+    $('#share-modal-id').html(design.design.id);
 });
 $('#search-users-dropdown').dropdown({
     apiSettings: {

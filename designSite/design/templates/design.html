@@ -529,20 +529,45 @@
 
   <!-- Share modal -->
   <div id="share-modal" class="ui tiny modal">
+
     <div class="content">
-      <select id="search-users-dropdown" class="ui fluid search dropdown"  multiple="">
-        <i class="dropdown icon"></i>
-        <div class="default text">Search User...</div>
-      </select>{% csrf_token %}
+      <label > name 
+      <span id="share-modal-name"> </span> <br>
+      </label>
+      <label> id 
+      <span id="share-modal-id"> </span><br>
+      </label>
+    </div>
+
+    <div class="content">
+      <div class="content">
+        <select id="search-users-dropdown" class="ui fluid search dropdown"  multiple="">
+          <i class="dropdown icon"></i>
+          <div class="default text">Search User...</div>
+        </select>{% csrf_token %}
+      </div>
+
+      <div class="content">
+        <br>
+        <div class="ui primary button" id="share-view-button">Enable View</div>
+        <div class="ui primary button" id="share-edit-button">Enable Edit</div>
+      </div>
 
       <div class="ui divider"></div>
       
-      <h5 id="share-info"></h5>
+      <h5 id="share-info">Read Only</h5>
+      <span style="background-color: rgba(255,255,255,0.8);padding: 1%;"> 
+        yanbin 
+        <i class="ui icon delete"></i>
+      </span>
 
       <div class="ui divider"></div>
+      <h5> Read and Write</h5>
+      <span style="background-color: rgba(255,255,255,0.8);padding: 1%;"> 
+        yanbin 
+        <i class="ui icon delete"></i>
+      </span>
 
-      <div class="ui primary button" id="share-view-button">Share view</div>
-      <div class="ui primary button" id="share-edit-button">Share edit</div>
     </div>
   </div>
 
