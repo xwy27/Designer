@@ -1814,6 +1814,16 @@ function finishNewConnection() {
     design.redrawDesign();
     selectMode('modifyItem');
 }
+
+$('#add-stimulation').on('click', function() {
+    $('#bi-mode').text('Adding Stimulation');
+})
+$('#add-inhibition').on('click', function() {
+    $('#bi-mode').text('Adding Inhibition');
+})
+$('#delete-connection').on('click', function() {
+    $('#bi-mode').text('Delete Connection');
+})
 let currentPopupId;
 $('#interactive-button')
     .on('click', () => {
