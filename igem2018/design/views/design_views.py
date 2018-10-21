@@ -492,7 +492,7 @@ def part(request):
             if part.Username == "Unknown":
                 partName = part.Name
             else:
-                partName = "{}({})".format(''.join(part.Name.split('_')[:-1]), part.Name.split('_')[-1])
+                partName = "{}({})".format('_'.join(part.Name.split('_')[:-1]), part.Name.split('_')[-1])
             part_dict = {
                 'id': part.id,
                 'name': partName,    #Not return the username
