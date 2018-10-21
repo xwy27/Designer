@@ -1049,217 +1049,218 @@ def SBOL_preprocess(data):
 
 @csrf_exempt
 def get_sbol_doc(request):
-    if request.method == 'POST':
-        print(request.POST['data'])
-        data = json.loads(request.POST['data'])
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.POST['data'])
 
-        setHomespace('http://sys-bio.org')
-        doc = Document()
+            setHomespace('http://sys-bio.org')
+            doc = Document()
 
-        roles = {
-            # 'RNA': SO_SGRNA,
-            'DNA': SO_GENE,
-            'RBS': SO_RBS,
-            'CDS': SO_CDS,
-            'Promoter': SO_PROMOTER,
-            'Terminator': SO_TERMINATOR,
-            'RNA': 'http://identifiers.org/so/SO:0000356',
-            'gene': 'http://identifiers.org/so/SO:0000704',
-            'mRNA': 'http://identifiers.org/so/SO:0000234',
-            'SGRNA': 'http://identifiers.org/so/SO:0001998',
-            'Complex': 'http://identifiers.org/ncit/C47881',
-            'operator': 'http://identifiers.org/so/SO:0000057',
-            'Effector': 'http://identifiers.org/chebi/CHEBI:35224',
-            'Reporter': 'http://identifiers.org/ncit/C41191',
-            'Insulator': 'http://identifiers.org/so/SO:0000627',
-            'Composite': 'http://identifiers.org/ncit/C61520',
-            'Generator': 'http://identifiers.org/ncit/C42770',
-            'Signature': 'http://identifiers.org/so/SO:0001978',
-            '5\' overhang': 'http://identifiers.org/so/SO:0001932',
-            '3\' overhang': 'http://identifiers.org/so/SO:0001933',
-            'User defined': 'http://identifiers.org/so/SO:0000804',
-            'fivePrimeUtr': 'http://identifiers.org/so/SO:0000204',
-            'Assembly scar': 'http://identifiers.org/so/SO:0001953',
-            'Protease site': 'http://identifiers.org/so/SO:0001956',
-            'engineeredGene': 'http://identifiers.org/so/SO:0000280',
-            'Inverter Device': 'http://identifiers.org/ncit/C50010',
-            'sequenceFeature': 'http://identifiers.org/so/SO:0000110',
-            'sequenceFeature': 'http://identifiers.org/so/SO:0000110',
-            'Ribonuclease site': 'http://identifiers.org/so/SO:0001977',
-            'Measurement Device': 'http://identifiers.org/ncit/C81182',
-            'primer binding site': 'http://identifiers.org/so/SO:0005850',
-            'Signalling Molecule': 'http://identifiers.org/chebi/CHEBI:62488',
-            'Origin of replication': 'http://identifiers.org/so/SO:0000296',
-            'RNA stability element': 'http://identifiers.org/so/SO:0001979',
-            'Blunt restriction site': 'http://identifiers.org/so/SO:0001691',
-            'Protein stability element': 'http://identifiers.org/so/SO:0001955',
-            'Restriction enzyme recognition site': 'http://identifiers.org/so/SO:0001687',
-        }
-        # activity = Activity(data['circuit']['name'])
-        # activity.displayId = data['circuit']['name']
-        # activity.displayId = 'SYSU_Software'
-        activity = Activity('SYSU_Software')
-        activity.description = data['circuit']['description']
-        doc.addActivity(activity)
+            roles = {
+                # 'RNA': SO_SGRNA,
+                'DNA': SO_GENE,
+                'RBS': SO_RBS,
+                'CDS': SO_CDS,
+                'Promoter': SO_PROMOTER,
+                'Terminator': SO_TERMINATOR,
+                'RNA': 'http://identifiers.org/so/SO:0000356',
+                'gene': 'http://identifiers.org/so/SO:0000704',
+                'mRNA': 'http://identifiers.org/so/SO:0000234',
+                'SGRNA': 'http://identifiers.org/so/SO:0001998',
+                'Complex': 'http://identifiers.org/ncit/C47881',
+                'operator': 'http://identifiers.org/so/SO:0000057',
+                'Effector': 'http://identifiers.org/chebi/CHEBI:35224',
+                'Reporter': 'http://identifiers.org/ncit/C41191',
+                'Insulator': 'http://identifiers.org/so/SO:0000627',
+                'Composite': 'http://identifiers.org/ncit/C61520',
+                'Generator': 'http://identifiers.org/ncit/C42770',
+                'Signature': 'http://identifiers.org/so/SO:0001978',
+                '5\' overhang': 'http://identifiers.org/so/SO:0001932',
+                '3\' overhang': 'http://identifiers.org/so/SO:0001933',
+                'User defined': 'http://identifiers.org/so/SO:0000804',
+                'fivePrimeUtr': 'http://identifiers.org/so/SO:0000204',
+                'Assembly scar': 'http://identifiers.org/so/SO:0001953',
+                'Protease site': 'http://identifiers.org/so/SO:0001956',
+                'engineeredGene': 'http://identifiers.org/so/SO:0000280',
+                'Inverter Device': 'http://identifiers.org/ncit/C50010',
+                'sequenceFeature': 'http://identifiers.org/so/SO:0000110',
+                'sequenceFeature': 'http://identifiers.org/so/SO:0000110',
+                'Ribonuclease site': 'http://identifiers.org/so/SO:0001977',
+                'Measurement Device': 'http://identifiers.org/ncit/C81182',
+                'primer binding site': 'http://identifiers.org/so/SO:0005850',
+                'Signalling Molecule': 'http://identifiers.org/chebi/CHEBI:62488',
+                'Origin of replication': 'http://identifiers.org/so/SO:0000296',
+                'RNA stability element': 'http://identifiers.org/so/SO:0001979',
+                'Blunt restriction site': 'http://identifiers.org/so/SO:0001691',
+                'Protein stability element': 'http://identifiers.org/so/SO:0001955',
+                'Restriction enzyme recognition site': 'http://identifiers.org/so/SO:0001687',
+            }
+            # activity = Activity(data['circuit']['name'])
+            # activity.displayId = data['circuit']['name']
+            # activity.displayId = 'SYSU_Software'
+            activity = Activity('SYSU_Software')
+            activity.description = data['circuit']['description']
+            doc.addActivity(activity)
 
-        # load components
-        components = {}
-        com_set = set()
-        for component in data['components']:
-            logger.debug(component['name'])
-            temp = ComponentDefinition(component['name'])
-            if component['name'] in com_set:
-                continue
-            com_set.add(component['name'])
-            temp.roles = roles[component['role']]
-            temp.description = component['description']
-            temp.sequence = Sequence(component['name'], component['sequence'])
-            components[component['name']] = temp
-            doc.addComponentDefinition(temp)
+            # load components
+            components = {}
+            com_set = set()
+            for component in data['components']:
+                logger.debug(component['name'])
+                temp = ComponentDefinition(component['name'])
+                if component['name'] in com_set:
+                    continue
+                com_set.add(component['name'])
+                temp.roles = roles[component['role']]
+                temp.description = component['description']
+                temp.sequence = Sequence(component['name'], component['sequence'])
+                components[component['name']] = temp
+                doc.addComponentDefinition(temp)
 
-        # load line structure
-        for line in data['lines']:
-            structure = []
-            circuit = ComponentDefinition(line['name'])
-            doc.addComponentDefinition(circuit)
-            for temp in line['structure']:
-                structure.append(components[temp])
-            circuit.assemblePrimaryStructure(structure)
+            # load line structure
+            for line in data['lines']:
+                structure = []
+                circuit = ComponentDefinition(line['name'])
+                doc.addComponentDefinition(circuit)
+                for temp in line['structure']:
+                    structure.append(components[temp])
+                circuit.assemblePrimaryStructure(structure)
 
-        # functional components
-        pro_fcs = {}
-        inh_fcs = {}
-        com_fcs = {}
+            # functional components
+            pro_fcs = {}
+            inh_fcs = {}
+            com_fcs = {}
 
-        # stimulation
-        if 'stimulations' in data.keys():
-            proModule = ModuleDefinition('stimulation_module')
-            doc.addModuleDefinition(proModule)
+            # stimulation
+            if 'stimulations' in data.keys():
+                proModule = ModuleDefinition('stimulation_module')
+                doc.addModuleDefinition(proModule)
 
-            for index, stimulation in enumerate(data['stimulations']):
-                stimulatorName = stimulation['stimulator']
-                otherName = stimulation['other']
+                for index, stimulation in enumerate(data['stimulations']):
+                    stimulatorName = stimulation['stimulator']
+                    otherName = stimulation['other']
 
-                if not stimulatorName in pro_fcs.keys():
-                    stimulator_fc = proModule.functionalComponents.create(
+                    if not stimulatorName in pro_fcs.keys():
+                        stimulator_fc = proModule.functionalComponents.create(
+                            stimulatorName)
+                        stimulator_fc.definition = components[stimulatorName].identity
+                        stimulator_fc.access = SBOL_ACCESS_PUBLIC
+                        stimulator_fc.direction = SBOL_DIRECTION_IN_OUT
+                        pro_fcs[stimulatorName] = stimulator_fc
+
+                    if not otherName in pro_fcs.keys():
+                        other_fc = proModule.functionalComponents.create(otherName)
+                        other_fc.definition = components[otherName].identity
+                        other_fc.access = SBOL_ACCESS_PUBLIC
+                        other_fc.direction = SBOL_DIRECTION_IN_OUT
+                        pro_fcs[otherName] = other_fc
+
+                    proInteraction = proModule.interactions.create(
+                        'stimulation_' + str(index))
+                    proInteraction.types = SBO_STIMULATION
+
+                    stimulator_participation = proInteraction.participations.create(
                         stimulatorName)
-                    stimulator_fc.definition = components[stimulatorName].identity
-                    stimulator_fc.access = SBOL_ACCESS_PUBLIC
-                    stimulator_fc.direction = SBOL_DIRECTION_IN_OUT
-                    pro_fcs[stimulatorName] = stimulator_fc
+                    stimulator_participation.roles = SBO_STIMULATOR
+                    stimulator_participation.participant = pro_fcs[stimulatorName].identity
 
-                if not otherName in pro_fcs.keys():
-                    other_fc = proModule.functionalComponents.create(otherName)
-                    other_fc.definition = components[otherName].identity
-                    other_fc.access = SBOL_ACCESS_PUBLIC
-                    other_fc.direction = SBOL_DIRECTION_IN_OUT
-                    pro_fcs[otherName] = other_fc
+                    if otherName == stimulatorName:
+                        other_participation = stimulator_participation
+                    else:
+                        other_participation = proInteraction.participations.create(
+                            otherName)
+                    other_participation.roles = components[otherName].roles
+                    other_participation.participant = pro_fcs[otherName].identity
 
-                proInteraction = proModule.interactions.create(
-                    'stimulation_' + str(index))
-                proInteraction.types = SBO_STIMULATION
+            # inhibition
+            if 'inhibitions' in data.keys():
+                inhModule = ModuleDefinition('inhbition_module')
+                doc.addModuleDefinition(inhModule)
 
-                stimulator_participation = proInteraction.participations.create(
-                    stimulatorName)
-                stimulator_participation.roles = SBO_STIMULATOR
-                stimulator_participation.participant = pro_fcs[stimulatorName].identity
+                for index, inhibition in enumerate(data['inhibitions']):
+                    inhibitorName = inhibition['inhibitor']
+                    otherName = inhibition['other']
 
-                if otherName == stimulatorName:
-                    other_participation = stimulator_participation
-                else:
-                    other_participation = proInteraction.participations.create(
-                        otherName)
-                other_participation.roles = components[otherName].roles
-                other_participation.participant = pro_fcs[otherName].identity
+                    if not inhibitorName in inh_fcs.keys():
+                        inhibitor_fc = inhModule.functionalComponents.create(
+                            inhibitorName)
+                        inhibitor_fc.definition = components[inhibitorName].identity
+                        inhibitor_fc.access = SBOL_ACCESS_PUBLIC
+                        inhibitor_fc.direction = SBOL_DIRECTION_IN_OUT
+                        inh_fcs[inhibitorName] = inhibitor_fc
 
-        # inhibition
-        if 'inhibitions' in data.keys():
-            inhModule = ModuleDefinition('inhbition_module')
-            doc.addModuleDefinition(inhModule)
+                    if not otherName in inh_fcs.keys():
+                        other_fc = inhModule.functionalComponents.create(otherName)
+                        other_fc.definition = components[otherName].identity
+                        other_fc.access = SBOL_ACCESS_PUBLIC
+                        other_fc.direction = SBOL_DIRECTION_IN_OUT
+                        inh_fcs[otherName] = other_fc
 
-            for index, inhibition in enumerate(data['inhibitions']):
-                inhibitorName = inhibition['inhibitor']
-                otherName = inhibition['other']
+                    inhInteraction = inhModule.interactions.create(
+                        'inhibition_' + str(index))
+                    inhInteraction.types = SBO_INHIBITION
 
-                if not inhibitorName in inh_fcs.keys():
-                    inhibitor_fc = inhModule.functionalComponents.create(
+                    inhibitor_participation = inhInteraction.participations.create(
                         inhibitorName)
-                    inhibitor_fc.definition = components[inhibitorName].identity
-                    inhibitor_fc.access = SBOL_ACCESS_PUBLIC
-                    inhibitor_fc.direction = SBOL_DIRECTION_IN_OUT
-                    inh_fcs[inhibitorName] = inhibitor_fc
+                    inhibitor_participation.roles = SBO_INHIBITOR
+                    inhibitor_participation.participant = inh_fcs[inhibitorName].identity
 
-                if not otherName in inh_fcs.keys():
-                    other_fc = inhModule.functionalComponents.create(otherName)
-                    other_fc.definition = components[otherName].identity
-                    other_fc.access = SBOL_ACCESS_PUBLIC
-                    other_fc.direction = SBOL_DIRECTION_IN_OUT
-                    inh_fcs[otherName] = other_fc
+                    if otherName == inhibitorName:
+                        other_participation = inhibitor_participation
+                    else:
+                        other_participation = inhInteraction.participations.create(
+                            otherName)
+                    other_participation.roles = components[otherName].roles
+                    other_participation.participant = inh_fcs[otherName].identity
 
-                inhInteraction = inhModule.interactions.create(
-                    'inhibition_' + str(index))
-                inhInteraction.types = SBO_INHIBITION
+            # combination
+            if 'combinations' in data.keys():
+                comModule = ModuleDefinition('combination_module')
+                doc.addModuleDefinition(comModule)
 
-                inhibitor_participation = inhInteraction.participations.create(
-                    inhibitorName)
-                inhibitor_participation.roles = SBO_INHIBITOR
-                inhibitor_participation.participant = inh_fcs[inhibitorName].identity
-
-                if otherName == inhibitorName:
-                    other_participation = inhibitor_participation
-                else:
-                    other_participation = inhInteraction.participations.create(
-                        otherName)
-                other_participation.roles = components[otherName].roles
-                other_participation.participant = inh_fcs[otherName].identity
-
-        # combination
-        if 'combinations' in data.keys():
-            comModule = ModuleDefinition('combination_module')
-            doc.addModuleDefinition(comModule)
-
-            for index, combination in enumerate(data['combinations']):
-                comInteraction = comModule.interactions.create(
-                    'combination_' + str(index))
-                comInteraction.role = SBO_NONCOVALENT_BINDING
-                for reactant in combination['reactants']:
-                    if not reactant in com_fcs.keys():
-                        reactant_fc = comModule.functionalComponents.create(
+                for index, combination in enumerate(data['combinations']):
+                    comInteraction = comModule.interactions.create(
+                        'combination_' + str(index))
+                    comInteraction.role = SBO_NONCOVALENT_BINDING
+                    for reactant in combination['reactants']:
+                        if not reactant in com_fcs.keys():
+                            reactant_fc = comModule.functionalComponents.create(
+                                reactant)
+                            reactant_fc.definition = components[reactant].identity
+                            reactant_fc.access = SBOL_ACCESS_PUBLIC
+                            reactant_fc.direction = SBOL_DIRECTION_IN_OUT
+                            com_fcs[reactant] = reactant_fc
+                        reactant_participation = comInteraction.participations.create(
                             reactant)
-                        reactant_fc.definition = components[reactant].identity
-                        reactant_fc.access = SBOL_ACCESS_PUBLIC
-                        reactant_fc.direction = SBOL_DIRECTION_IN_OUT
-                        com_fcs[reactant] = reactant_fc
-                    reactant_participation = comInteraction.participations.create(
-                        reactant)
-                    reactant_participation.roles = SBO_REACTANT
-                    reactant_participation.participant = com_fcs[reactant].identity
+                        reactant_participation.roles = SBO_REACTANT
+                        reactant_participation.participant = com_fcs[reactant].identity
 
-                product = combination['product']
-                if not product in com_fcs.keys():
-                    product_fc = comModule.functionalComponents.create(product)
-                    product_fc.definition = components[product].identity
-                    product_fc.access = SBOL_ACCESS_PUBLIC
-                    product_fc.direction = SBOL_DIRECTION_IN_OUT
-                    com_fcs[product] = product_fc
-                    product_participation = comInteraction.participations.create(
-                        product)
-                    product_participation.roles = SBO_PRODUCT
-                    product_participation.participant = com_fcs[product].identity
+                    product = combination['product']
+                    if not product in com_fcs.keys():
+                        product_fc = comModule.functionalComponents.create(product)
+                        product_fc.definition = components[product].identity
+                        product_fc.access = SBOL_ACCESS_PUBLIC
+                        product_fc.direction = SBOL_DIRECTION_IN_OUT
+                        com_fcs[product] = product_fc
+                        product_participation = comInteraction.participations.create(
+                            product)
+                        product_participation.roles = SBO_PRODUCT
+                        product_participation.participant = com_fcs[product].identity
 
-        # create sbol document
-        circuit_name = data['circuit']['name']
-        filename = circuit_name + '.xml'
-        result = doc.write(filename)
-        print(result)
+            # create sbol document
+            circuit_name = data['circuit']['name']
+            filename = circuit_name + '.xml'
+            result = doc.write(filename)
 
-        response = HttpResponse(open(filename, "rb"), content_type="text/xml")
+            response = HttpResponse(open(filename, "rb"), content_type="text/xml")
 
-        if os.path.exists(filename):
-            os.remove(filename)
+            if os.path.exists(filename):
+                os.remove(filename)
 
-        return response
-
+            return response
+    except ValueError as e:
+        logger.error(e)
+        return HttpResponse(open("error.xml", "rb"), content_type="text/xml")
 
 so_dict = {
     'http://identifiers.org/ncit/C47881': 'Complex',
