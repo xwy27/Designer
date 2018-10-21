@@ -439,6 +439,7 @@ def part(request):
             'name': xxx,
             'description': xxx,
             'type': xxx,
+            'sequence': xxx,
             'subparts': [
                 {
                     'id': xxx,
