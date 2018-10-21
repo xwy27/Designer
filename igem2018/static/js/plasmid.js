@@ -62,6 +62,7 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 app.controller('PlasmidCtrl', function($scope, $http){
 
     // 获得质粒数据
+    return;
     $http.get('/api/plasmid_data').then(function(data){
         // console.log(data);
         $scope.plasmids = data.data.data;

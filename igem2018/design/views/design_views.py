@@ -441,6 +441,7 @@ def part(request):
             'name': xxx,
             'description': xxx,
             'type': xxx,
+            'sequence': xxx,
             'subparts': [
                 {
                     'id': xxx,
@@ -1425,7 +1426,7 @@ sbo_dict = {
 def get_sbol_json(request):
     if request.method == 'POST':
         doc = Document()
-        doc.readString(request.POST['data'])
+        doc.readString(json.loads(request.POST['data']))
 
         data = {
             "components": [],

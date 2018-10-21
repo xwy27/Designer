@@ -1673,15 +1673,15 @@ $('#inspect-item')
                 itemModal
                     .find('textarea[name=component-description]')
                     .val(data['part']['description']);
-                $.ajax('/api/plasm_part', {
+                $.ajax('/api/part', {
                     data: {
-                        name: data['part']['name']
+                        id: data['part']['id']
                     },
                     success: (data) => {
                         console.log(data);
                         itemModal
                             .find('textarea[name=component-sequence]')
-                            .val(data['seq']);
+                            .val(data['sequence']);
                     }
                 });
             });
