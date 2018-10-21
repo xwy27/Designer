@@ -1156,12 +1156,15 @@ def final():
 
     print('not allow <-> and < > and <*>, change all of them to <_>')
     not_allow_list = [' ', '-', '*']
-    for part in Parts.objects.all():
-        for ch in not_allow_list:
-            if ch in part.Name:
-                part.Name.replace(ch, '_')
-                print(part.Name)
-                part.save()
+        for part in Parts.objects.all():
+            for ch in not_allow_list:
+                if ch in part.Name:
+                    try:
+                        part.Name.replace(ch, '_')
+                        print(part.Name)
+                        part.save()
+                    except:
+                        print('error occured.')
 
 
 
