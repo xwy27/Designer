@@ -1426,7 +1426,7 @@ sbo_dict = {
 def get_sbol_json(request):
     if request.method == 'POST':
         doc = Document()
-        doc.readString(json.loads(request.POST['data']))
+        doc.readString(request.POST['data'])
 
         data = {
             "components": [],
