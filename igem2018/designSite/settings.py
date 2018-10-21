@@ -25,7 +25,7 @@ SECRET_KEY = 'w#em1n!-7#cwl6b3()wn$(h*o%##=@=01!#$phq!i&xn2_c^%c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '172.18.33.107', 'localhost', 'www.sysu-corad.com']
+ALLOWED_HOSTS = ['127.0.0.1', '172.18.33.107', 'localhost', 'www.sysu-corad.com', 'sysu-corad.com']
 
 
 # Application definition
@@ -160,7 +160,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'main_formatter',
