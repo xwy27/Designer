@@ -324,7 +324,7 @@ function old_to_new(old) {
                 let temp = {
                     role: Role,
                     id: part.id,
-                    name: part.name,
+                    name: part.name.replace(/\(/g,'_').replace(/\)/g,''),
                     version: '1',
                     description: part.description,
                     sequence: Sequence
@@ -340,21 +340,21 @@ function old_to_new(old) {
             structure: []
         };
         $.each(device.subparts, function (index, subpart) {
-            temp.structure.push(part_dict[subpart]);
+            temp.structure.push(part_dict[subpart].replace(/\(/g,'_').replace(/\)/g,''));
         });
         Lines.push(temp);
     });
     $.each(old.lines, function (index, line) {
         if (line.type == 'inhibition') {
             let temp = {
-                'inhibitor': part_dict[line.start],
-                'other': part_dict[line.end]
+                'inhibitor': part_dict[line.start].replace(/\(/g,'_').replace(/\)/g,''),
+                'other': part_dict[line.end].replace(/\(/g,'_').replace(/\)/g,'')
             };
             Inhibitions.push(temp);
         } else if (line.type == 'promotion' || line.type == 'stimulation') {
             let temp = {
-                'stimulator': part_dict[line.start],
-                'other': part_dict[line.end]
+                'stimulator': part_dict[line.start].replace(/\(/g,'_').replace(/\)/g,''),
+                'other': part_dict[line.end].replace(/\(/g,'_').replace(/\)/g,'')
             };
             Stimulations.push(temp);
         }
