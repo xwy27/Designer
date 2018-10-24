@@ -340,6 +340,7 @@ $('#sbol-json-button').on('click', function () {
 $('#sbolfileupload').on('change', function () {
     let data = $('input[name="sbolfiles[]"]')[0].files[0];
     sbolFileReader.readAsText(data);
+    $(this).val('');
 });
 
 //export file
