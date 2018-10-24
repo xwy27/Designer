@@ -908,6 +908,13 @@ def sim_and_opt(request):
 
         data = json.loads(request.POST['data'])
 
+
+        evol_t = float(data['time']) # reaction duration
+        print(evol_t)
+        if evol_t <= 0:
+            logging.info("Evolutionary time not positive")
+            return JsonResponse({'success':-1, 'msg': 'Evolutionary time is 0.'})
+
         material_amount = data['parts']
         num_of_material = len(material_amount)
         lines = data['lines']
@@ -948,7 +955,7 @@ def sim_and_opt(request):
             else:
                 return JsonResponse({'success':-1})
         
-        evol_t = float(data['time']) # reaction duration
+       
 
         data = {
             'matrix': matrix,
