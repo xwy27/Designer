@@ -910,7 +910,6 @@ def sim_and_opt(request):
 
 
         evol_t = float(data['time']) # reaction duration
-        print(evol_t)
         if evol_t <= 0:
             logging.info("Evolutionary time not positive")
             return JsonResponse({'success':-1, 'msg': 'Evolutionary time is 0.'})
@@ -975,7 +974,7 @@ def sim_and_opt(request):
                 t, y = solve_ode(data, k_op, evol_t)
         except:
             logging.info("Error while computing ode...")
-            return JsonResponse({'success':-1})
+            return JsonResponse({'success':-1, 'msg': 'Error while computing ode'})
         print("New ks:", k_op)
         t = []
         y_np = np.array(y)
@@ -1011,6 +1010,7 @@ def sim_and_opt(request):
             }],
             "parts": [material_id[target]],
             "xAxis": [round(i,3) for i in list(np.linspace(0, evol_t, 100))],
+            "success": 0
         }
         if flag == 'optimization':
             result["new_ks"] = [k_op[target]]
