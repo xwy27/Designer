@@ -1154,14 +1154,18 @@ def final():
         work.Circuit = circuit
         work.save()
 
-    print('not allow <-> and < > and <*>, change all of them to <_>')
-    not_allow_list = [' ', '-', '*']
+    print('only allow a-zA-Z0-9_. change all others to _ .')
+    import re
+    re.sub(r'[^a-zA-Z0-9_]', '_', 'avcdsf(ssdsf_-asf)')
     for part in Parts.objects.all():
-        for ch in not_allow_list:
-            if ch in part.Name:
-                part.Name.replace(ch, '_')
+        try:
+            if re.match(r'^[a-zA-Z0-9_]{2,}$', part.Name) is None:
                 print(part.Name)
-                part.save()
+                part.Name = re.sub(r'[^a-zA-Z0-9_]', '_', part.Name)
+                print(part.Name)
+                part.Name.save()
+        except:
+            print('unknown error.')
 
 
 
