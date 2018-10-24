@@ -330,6 +330,7 @@ $('#upload-button').on('click', function () {
 });
 $('#fileupload').on('change', function () {
     JsonFileReader.readAsText($('#fileupload')[0].files[0]);
+    $(this).val('');
 });
 
 $('#sbol-json-button').on('click', function () {
