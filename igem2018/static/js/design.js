@@ -2349,7 +2349,7 @@ function submitSimulation() {
                 if (data.success == -1) {
                     $design_msg_body.text("Error:" + data.msg);
                     setTimeout(function(){
-                        $design_msg_body.modal('hide');
+                        $design_msg_modal.modal('hide');
                     }, 2000);
                     return;
                 }
