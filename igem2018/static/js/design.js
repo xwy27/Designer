@@ -2344,11 +2344,14 @@ function submitSimulation() {
                 csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()
             },
             success: function (data) {
-                $design_msg_modal.modal('hide');
                 if (data.success == -1) {
                     $design_msg_body.text("Error:" + data.msg);
+                    setTimeout(function(){
+                        $design_msg_body.modal('hide');
+                    }, 2000);
                     return;
                 }
+                $design_msg_modal.modal('hide');
                 showSimulationChart(data);
             },
             error: function() {
