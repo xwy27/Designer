@@ -209,7 +209,8 @@ function new_to_old(data) {
             success: function (res) {
                 let targetPart;
                 for (let part of res.parts) {
-                    if (part.name === component.name) {
+                    let tempName = part.name.replace(/\(/g,'_').replace(/\)/g,'');
+                    if (tempName === component.name) {
                         targetPart = part;
                         break;
                     }
