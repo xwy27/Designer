@@ -207,13 +207,25 @@ function new_to_old(data) {
             url: '/api/parts?flag=11111111111111111111&name=' + component.name,
             async: false,
             success: function (res) {
+                let targetPart;
+                for (let part of res.parts) {
+                    if (part.name === component.name) {
+                        targetPart = part;
+                        break;
+                    }
+                }
+                
+                if (targetPart == undefined) {
+                    return ;
+                }
+
                 $.ajax({
                     type: 'GET',
-                    url: '/api/part?id=' + res.parts[0].id,
+                    url: '/api/part?id=' + targetPart.id,
                     async: false,
                     success: function (res2) {
                         let temp = {
-                            id: res.parts[0].id,
+                            id: targetPart.id,
                             cid: cid_dict[component.name],
                             name: component.name,
                             description: component.description,
