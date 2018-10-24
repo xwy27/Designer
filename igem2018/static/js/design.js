@@ -302,6 +302,7 @@ sbolFileReader.onload = () => {
     $.ajax({
         url: '/api/sbol_json',
         data: data,
+        type: 'POST',
         success: function(v) {
             console.log(v['data']);
             let temp = new_to_old(JSON.parse(v['data']));
