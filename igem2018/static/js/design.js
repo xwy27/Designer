@@ -2344,6 +2344,8 @@ function submitSimulation() {
                 csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()
             },
             success: function (data) {
+                $design_msg_modal.modal('show');
+                $design_msg_body.text('please wait...');
                 if (data.success == -1) {
                     $design_msg_body.text("Error:" + data.msg);
                     setTimeout(function(){
