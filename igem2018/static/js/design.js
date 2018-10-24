@@ -217,6 +217,12 @@ function new_to_old(data) {
                 }
                 
                 if (targetPart == undefined) {
+
+                    $design_msg_body.text('Please make sure your inputs are valid.');
+                    $design_msg_modal.modal('show');
+                    setTimeout(() => {
+                        $design_msg_modal.modal('hide');
+                    }, 2000);
                     return ;
                 }
 
@@ -293,12 +299,29 @@ sbolFileReader.onload = () => {
     let data = {
         data: sbolFileReader.result
     };
-    $.post('/api/sbol_json', data, function (v) {
-        console.log(v['data']);
-        let temp = new_to_old(JSON.parse(v['data']));
-        console.log(temp);
-        design.design = temp;
-    });
+    $.ajax({
+        url: '/api/sbol_json',
+        data: data,
+        success: function(v) {
+            console.log(v['data']);
+            let temp = new_to_old(JSON.parse(v['data']));
+            console.log(temp);
+            design.design = temp;
+        },
+        error: function() {
+            $design_msg_body.text('Please make sure your inputs are valid.');
+            $design_msg_modal.modal('show');
+            setTimeout(() => {
+                $design_msg_modal.modal('hide');
+            }, 2000);
+        }
+    })
+    // $.post('/api/sbol_json', data, function (v) {
+    //     console.log(v['data']);
+    //     let temp = new_to_old(JSON.parse(v['data']));
+    //     console.log(temp);
+    //     design.design = temp;
+    // });
 };
 $('#upload-button').on('click', function () {
     $('#fileupload').trigger('click');
