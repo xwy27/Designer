@@ -312,6 +312,11 @@ class SDinDesign {
             t[p.cid] = p;
             return t;
         }, {});
+
+        // let tmp = {};
+        // for part in parts:
+        //     tmp[part.cid] = part
+
         $.each(tmp, (_, v) => {
             if (v.X === undefined)
                 v.X = 0;

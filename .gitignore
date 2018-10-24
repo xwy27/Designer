@@ -8,3 +8,4 @@ designSite/static/js/tmp.json
 .DS_Store
 /**/*.bin
 /**/*.zip
+**/*.bac
