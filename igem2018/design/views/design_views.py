@@ -993,7 +993,6 @@ def sim_and_opt(request):
         #     })
 
         # Target data
-        print(target)
         result = {
             "data": [{
                 'name': material_id[target],
