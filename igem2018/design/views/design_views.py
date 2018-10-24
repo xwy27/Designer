@@ -912,7 +912,7 @@ def sim_and_opt(request):
         evol_t = float(data['time']) # reaction duration
         if evol_t <= 0:
             logging.info("Evolutionary time not positive")
-            return JsonResponse({'success':-1, 'msg': 'Evolutionary time is 0.'})
+            return JsonResponse({'success':-1, 'msg': 'Evolutionary time is not positive.'})
 
         material_amount = data['parts']
         num_of_material = len(material_amount)
