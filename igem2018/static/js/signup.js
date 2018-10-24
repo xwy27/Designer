@@ -1,16 +1,17 @@
 $(document).ready(function () {
-
+    
     $('.ui.form')
         .form({
-            fields: {
-                username: ['empty'],
-                // username: {
-                //     identifier: 'username', 
-                //     rules: [{
-                //         type: "empty",
-                //         prompt: "Username format invalid."
-                //     }]
-                // },
+            fields: { 
+                username: {
+                    identifier  : 'regex',
+                    rules: [
+                      {
+                        type   : 'regExp[/^[a-zA-Z0-9]+$/]',
+                        prompt : 'Username can only contain alphas and digits.'
+                      }
+                    ]
+                  },
                 email: ['email', 'empty'],
                 password: ['minLength[6]', 'empty'],
                 password2: ['match[password]'],
@@ -21,6 +22,13 @@ $(document).ready(function () {
 
     $('#signup-button')
         .on('click', function () {
+            var pattern = new RegExp('^[a-zA-Z0-9]+$');
+            if (!pattern.test($('#username').val())) {
+                $('.error.message>.list').html('<li>Username can only contain alphas and digits.</li>');
+                $('.error.message').show();
+                return;
+            }
+            $('.error.message').hide();
             $('.ui.form').form('submit');
         });
     $('#login-button')
