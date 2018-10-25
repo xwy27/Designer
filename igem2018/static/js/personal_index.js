@@ -76,7 +76,7 @@ function refresh() {
         }
 
         $('.authority-delete').on('click', function () {
-            let username = $(this).parent()[0].innerText;
+            var username = $(this).parent()[0].innerText;
             $msg_body.text('Your alteration is sending to the server.');
             $msg_modal.modal('show');
             $.ajax({

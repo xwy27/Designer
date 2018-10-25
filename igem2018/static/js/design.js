@@ -15,7 +15,7 @@ let CHASSIS_FORMAT;
 
 let save_mode = 0;
 
-let username = $('#username-hack').text();
+var username = $('#username-hack').text();
 let authorname = $('#authorname-hack').text();
 
 let $design_msg_modal = $('#design-msg-modal');
@@ -787,7 +787,7 @@ function refresh() {
             $('#edit-users').html('<h5 class="ui center aligned">Share your design to others!</h5>');
         }
         $('.authority-delete').on('click', function() {
-            let username = $(this).parent()[0].innerText;
+            var username = $(this).parent()[0].innerText;
             if (design._id == -1) {
                 alert("Please save your design first!");
                 return;
