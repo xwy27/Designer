@@ -201,7 +201,8 @@ LOGGING = {
             'handlers': ['null', ],
         },
         '': {
-            'handlers': ['console', 'production_file', 'debug_file'],
+            # 'handlers': ['console', 'production_file', 'debug_file'],
+            'handlers': ['console'],
             'level': "DEBUG",
         },
     }
