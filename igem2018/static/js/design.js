@@ -190,15 +190,97 @@ $('#protocol-modal').modal({
     }
 });
 
+var sbolInt;
+var sbolAddInt;
+var userFinished = true;
+var queryFinished = false;
+var newPartFinished = false;
+var sbolList = [];
 
+function sbol_newpart(data) {
+    let res = data.res;
+    let component = data.component;
+    let cid_dict = data.cid_dict;
+
+    let targetPart;
+    for (let part of res.parts) {
+        let tempName = part.name.replace(/\(/g,'_').replace(/\)/g,'');
+        let tempName2 = tempName.split('_')[0];
+        let componentName2 = component.name.replace(/\_/g,'')
+        if (tempName === component.name || tempName2 === component.name || tempName2 === componentName2) {
+            targetPart = part;
+            break;
+        }
+    }
+    
+    if (targetPart == undefined) {
+        userFinished = false;
+        $('#gene-name').val(component.name);
+        $('#material-name').val(component.name);
+        $('#sbol-newpart-name').html(component.name);
+        $('#gene-description').val(component.description);
+        $('#material-description').val(component.description);
+        $('#gene-sequence').val(component.sequence);
+        $design_msg_modal.modal('hide');
+        $('#choose-added-part-type').modal('show');
+        // $design_msg_body.text('Please make sure your inputs are valid.');
+        // $design_msg_modal.modal('show');
+        // setTimeout(() => {
+        //     $design_msg_modal.modal('hide');
+        // }, 2000);
+        return ;
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/part?id=' + targetPart.id,
+        async: false,
+        success: function (res2) {
+            let temp = {
+                id: targetPart.id,
+                cid: cid_dict[component.name],
+                name: component.name,
+                description: component.description,
+                type: res2.type,
+                X: 0,
+                Y: 0
+            };
+            Parts.push(temp);
+        }
+    });
+}
+var Parts = [];
 // Upload file
 function new_to_old(data) {
 
     // Get parts infomation
     var Lines = [],
-        Devices = [],
-        Parts = [];
+        Devices = [];
+    Parts = [];
     var cid_dict = {};
+    userFinished = true;
+    queryFinished = false;
+    newPartFinished = false;
+    sbolInt = setInterval(() => {
+        if (userFinished) {
+            $('#gene-name').val('');
+            $('#material-name').val('');
+            $('#sbol-newpart-name').html('');
+            $('#gene-description').val('');
+            $('#material-description').val('');
+            $('#gene-sequence').val('');
+            if (queryFinished && sbolList.length == 0) {
+                clearInterval(sbolInt);
+                newPartFinished = true;
+                return;
+            } else {
+                if (sbolList.length > 0) {
+                    let curData = sbolList.shift();
+                    sbol_newpart(curData);
+                }
+            }
+        }
+    }, 500);
     $.each(data.components, function (index, component) {
         cid_dict[component.name] = design._nextPartCid;
         design._nextPartCid = design._nextPartCid + 1;
@@ -207,91 +289,73 @@ function new_to_old(data) {
             url: '/api/parts?flag=11111111111111111111&name=' + component.name,
             async: false,
             success: function (res) {
-                let targetPart;
-                for (let part of res.parts) {
-                    let tempName = part.name.replace(/\(/g,'_').replace(/\)/g,'');
-                    if (tempName === component.name) {
-                        targetPart = part;
-                        break;
-                    }
-                }
-                
-                if (targetPart == undefined) {
-
-                    $design_msg_body.text('Please make sure your inputs are valid.');
-                    $design_msg_modal.modal('show');
-                    setTimeout(() => {
-                        $design_msg_modal.modal('hide');
-                    }, 2000);
-                    return ;
-                }
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/part?id=' + targetPart.id,
-                    async: false,
-                    success: function (res2) {
-                        let temp = {
-                            id: targetPart.id,
-                            cid: cid_dict[component.name],
-                            name: component.name,
-                            description: component.description,
-                            type: res2.type,
-                            X: 0,
-                            Y: 0
-                        };
-                        Parts.push(temp);
-                    }
+                sbolList.push({
+                    res: res,
+                    component: component,
+                    cid_dict: cid_dict
                 });
             }
         });
     });
-
-
-    $.each(data.stimulations, function (index, stimulation) {
-        let temp = {
-            start: cid_dict[stimulation.stimulator],
-            end: cid_dict[stimulation.other],
-            type: 'stimulation'
-        };
-        Lines.push(temp);
-    });
-    $.each(data.inhibitions, function (index, inhibition) {
-        let temp = {
-            start: cid_dict[inhibition.inhibitor],
-            end: cid_dict[inhibition.other],
-            type: 'inhibition'
-        };
-        Lines.push(temp);
-    });
-    $.each(data.lines, function (index, line) {
-        let Subparts = [];
-        let x = -214;
-        let y = -180;
-        $.each(line.structure, function (index, x) {
-            Subparts.push(cid_dict[x]);
-        });
-        let temp = {
-            subparts: Subparts,
-            X: x,
-            Y: y + index * 110
-        };
-        Devices.push(temp);
-    });
-    let result = {
-        id: -1,
-        combines: [],
-        lines: Lines,
-        devices: Devices,
-        parts: Parts
-    };
-    return result;
+    queryFinished = true;
+    $design_msg_modal.modal('show');
+    sbolAddInt = setInterval(() => {
+        if (newPartFinished) {
+            newPartFinished = false;
+            console.log('data');
+            console.log(data);
+            
+            $.each(data.stimulations, function (index, stimulation) {
+                let temp = {
+                    start: cid_dict[stimulation.stimulator],
+                    end: cid_dict[stimulation.other],
+                    type: 'stimulation'
+                };
+                if (temp.start != undefined && temp.end != undefined) Lines.push(temp);
+            });
+            $.each(data.inhibitions, function (index, inhibition) {
+                let temp = {
+                    start: cid_dict[inhibition.inhibitor],
+                    end: cid_dict[inhibition.other],
+                    type: 'inhibition'
+                };
+                if (temp.start != undefined && temp.end != undefined) Lines.push(temp);
+            });
+            $.each(data.lines, function (index, line) {
+                let Subparts = [];
+                let x = -214;
+                let y = -180;
+                $.each(line.structure, function (index, x) {
+                    Subparts.push(cid_dict[x]);
+                });
+                let temp = {
+                    subparts: Subparts,
+                    X: x,
+                    Y: y + index * 110
+                };
+                if (temp.subparts.length > 0) Devices.push(temp);
+            });
+            let result = {
+                id: -1,
+                combines: [],
+                lines: Lines,
+                devices: Devices,
+                parts: Parts
+            };
+            console.log('result');
+            console.log(result);
+            design.design = result;
+            clearInterval(sbolAddInt);
+            $design_msg_modal.modal('hide');
+        }
+    }, 500);
+    // return result;
 }
 
 let JsonFileReader = new FileReader();
 JsonFileReader.onload = () => {
-    console.log(new_to_old(JSON.parse(JsonFileReader.result)));
-    design.design = new_to_old(JSON.parse(JsonFileReader.result));
+    // console.log(new_to_old(JSON.parse(JsonFileReader.result)));
+    new_to_old(JSON.parse(JsonFileReader.result));
 };
 let sbolFileReader = new FileReader();
 sbolFileReader.onload = () => {
@@ -299,15 +363,18 @@ sbolFileReader.onload = () => {
     let data = {
         data: sbolFileReader.result
     };
+    $design_msg_body.text('');
+    $design_msg_modal.modal('show');
     $.ajax({
         url: '/api/sbol_json',
         data: data,
         type: 'POST',
         success: function(v) {
             console.log(v['data']);
-            let temp = new_to_old(JSON.parse(v['data']));
-            console.log(temp);
-            design.design = temp;
+            new_to_old(JSON.parse(v['data']));
+            // let temp = new_to_old(JSON.parse(v['data']));
+            // console.log(temp);
+            // design.design = temp;
         },
         error: function() {
             $design_msg_body.text('Please make sure your inputs are valid.');
@@ -1512,6 +1579,7 @@ $('#add-new-gene, #add-new-material')
             setTimeout(() => {
                 $('.ui.dimmer:first').dimmer('hide');
             }, 2000);
+            userFinished = true;
             return;
         }
         if (addedPartType == 0)
@@ -1547,6 +1615,7 @@ $('#add-new-gene, #add-new-material')
                 .text('Failed, closing...');
             setTimeout(() => {
                 $('.ui.dimmer:first').dimmer('hide');
+                userFinished = true;
             }, 1000);
         });
     });

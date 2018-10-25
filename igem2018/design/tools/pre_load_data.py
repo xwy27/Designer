@@ -22,7 +22,7 @@ role_dict = {
     'CDS': 'CDS',
     'terminator': 'Terminator',
     'Terminator': 'Terminator',
-    'process': 'process',
+    'process': 'User defined',
     'ther_DNA': 'User defined',
     'other_DNA': 'User defined',
     'complex': 'Complex',

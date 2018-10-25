@@ -1450,31 +1450,20 @@ def get_sbol_json(request):
         # tranform componentDefinitions
         for x in doc:
             # print(str(x))
-            if 'Activity' in str(x):
+            className = parseClassName(str(doc.find(str(x)).type))
+            if 'Activity' in className:
                 temp = doc.getActivity(str(x))
                 data['circuit']['name'] = temp.displayId
                 data['circuit']['id'] = temp.displayId
                 data['circuit']['description'] = temp.description
-            elif 'ComponentDefinition' in str(x):
+            elif 'ComponentDefinition' in className:
                 temp = doc.getComponentDefinition(str(x))
+                logger.debug(temp)
                 component = {}
                 line = {
                     "structure": []
                 }
-                if temp.roles:  # components
-                    roleUri = temp.roles[0]
-                    if (roleUri in so_dict.keys()):
-                        component['role'] = so_dict[roleUri]
-                    component['id'] = temp.displayId
-                    component['name'] = temp.displayId
-                    component['version'] = temp.version
-                    component['description'] = temp.description
-                    sequenceUri = temp.sequences
-                    if sequenceUri:
-                        component['sequence'] = doc.getSequence(
-                            sequenceUri[0]).elements
-                    data['components'].append(component)
-                else:  # lines
+                if temp.components:  # lines
                     line['name'] = temp.displayId
                     line_comp = {}
                     for comp in temp.components:
@@ -1496,13 +1485,28 @@ def get_sbol_json(request):
                                 doc.getComponentDefinition(comp.definition).displayId)
 
                     data['lines'].append(line)
-            elif 'ModuleDefinition' in str(x):
+
+                else:  # components
+                    if temp.roles:
+                        roleUri = temp.roles[0]
+                        if (roleUri in so_dict.keys()):
+                            component['role'] = so_dict[roleUri]
+                    component['id'] = temp.displayId
+                    component['name'] = temp.displayId
+                    component['version'] = temp.version
+                    component['description'] = temp.description
+                    sequenceUri = temp.sequences
+                    if sequenceUri:
+                        component['sequence'] = doc.getSequence(
+                            sequenceUri[0]).elements
+                    data['components'].append(component)
+            elif 'ModuleDefinition' in className:
                 temp = doc.getModuleDefinition(str(x))
                 for action in temp.interactions:
                     if sbo_dict[action.types[0]] == 'inhibition':
                         inh = {}
                         for part in action.participations:
-                            if part.roles[0] in sbo_dict.keys():
+                            if part.roles[0] == 'http://identifiers.org/biomodels.sbo/SBO:0000020':
                                 inh[sbo_dict[part.roles[0]]] = part.displayId
                             else:
                                 inh['other'] = part.displayId
@@ -1510,7 +1514,7 @@ def get_sbol_json(request):
                     elif sbo_dict[action.types[0]] == 'stimulation':
                         pro = {}
                         for part in action.participations:
-                            if part.roles[0] in sbo_dict.keys():
+                            if part.roles[0] == 'http://identifiers.org/biomodels.sbo/SBO:0000459':
                                 pro[sbo_dict[part.roles[0]]] = part.displayId
                             else:
                                 pro['other'] = part.displayId
