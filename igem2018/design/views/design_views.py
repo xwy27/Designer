@@ -45,7 +45,7 @@ role_dict = {
     'CDS': 'CDS',
     'terminator': 'Terminator',
     'Terminator': 'Terminator',
-    'process': 'process',
+    'process': 'User defined',
     'ther_DNA': 'User defined',
     'other_DNA': 'User defined',
     'complex': 'Complex',
@@ -699,6 +699,20 @@ def circuit(request):
             query_id = request.GET.get('id')
             circuit = Circuit.objects.get(id=query_id)
             parts_query = CircuitParts.objects.filter(Circuit=query_id)
+            
+            no_pos_info = True
+
+            for i in range(1, len(parts_query)):
+                if parts_query[i].X != parts_query[i - 1].X or parts_query[i].Y != parts_query[i - 1].Y:
+                    no_pos_info = False
+                    print("Here")
+                    break
+
+            if no_pos_info:
+                for i, x in enumerate(parts_query):
+                    x.X = (i * 100) % 800
+                    x.Y = ((i * 100) // 800) * 100
+
             parts = [{'id': x.Part.id, 'cid': x.id, 'name': x.Part.Name,
                       'description': x.Part.Description, 'type': x.Part.Type,
                       'X': x.X, 'Y': x.Y} for x in parts_query]
